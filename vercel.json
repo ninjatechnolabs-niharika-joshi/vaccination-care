@@ -12,5 +12,6 @@
       "dest": "src/server.ts"
     }
   ],
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "regions": ["bom1"]
 }
