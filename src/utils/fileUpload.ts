@@ -4,12 +4,13 @@ import fs from 'fs';
 import { promises as fsAsync } from 'fs';
 import { AppError } from './AppError';
 
-// Upload directories
-const uploadsDir = path.join(process.cwd(), 'uploads');
-const profilePhotosDir = path.join(uploadsDir, 'profile-photos');
-const documentsDir = path.join(uploadsDir, 'documents');
-const mediaDir = path.join(uploadsDir, 'media');
-const videosDir = path.join(uploadsDir, 'videos');
+// Upload directories - use /tmp on Vercel, local uploads otherwise
+const baseUploadDir = process.env.VERCEL ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
+const uploadsDir = baseUploadDir;
+const profilePhotosDir = path.join(baseUploadDir, 'profile-photos');
+const documentsDir = path.join(baseUploadDir, 'documents');
+const mediaDir = path.join(baseUploadDir, 'media');
+const videosDir = path.join(baseUploadDir, 'videos');
 
 /**
  * Initialize upload directories asynchronously
@@ -31,9 +32,15 @@ export const initializeUploadDirectories = async (): Promise<void> => {
 
 // Synchronous fallback for initial module load (runs once)
 // This ensures directories exist before multer tries to use them
+// Wrapped in try-catch to ignore errors on Vercel (as requested)
 [uploadsDir, profilePhotosDir, documentsDir, mediaDir, videosDir].forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch (error) {
+    // Ignore errors on Vercel serverless environment
+    console.log('Skipping directory creation:', dir);
   }
 });
 
