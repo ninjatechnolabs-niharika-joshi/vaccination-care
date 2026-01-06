@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UploadController } from '../controllers/upload.controller';
 import { authenticate } from '../middleware/auth';
-import { uploadProfilePhoto, uploadMultipleMedia } from '../utils/fileUpload';
+import { uploadProfilePhoto, uploadMultipleMedia } from '../utilspload';
 
 const router = Router();
 const uploadController = new UploadController();

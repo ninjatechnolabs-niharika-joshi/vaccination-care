@@ -11,7 +11,7 @@ import { config } from './config/config';
 import { prisma, connectDatabase } from './config/database';
 import { validateEnv } from './utils/validateEnv';
 import { validateSecurityConfig } from './utils/securityChecks';
-
+import fs from 'fs';
 // Load environment variables
 dotenv.config();
 
@@ -33,8 +33,15 @@ app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Serve static files (uploaded images/documents)
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// Serve static files (uploaded images/documents)
+const uploadsDir = process.env.VERCEL ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
 
+// Ensure uploads directory exists
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+app.use('/uploads', express.static(uploadsDir));
 // Health check endpoint
 // app.get('', (req, res) => {
 //   const healthCheck = {
