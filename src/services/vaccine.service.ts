@@ -1,6 +1,6 @@
 import { prisma } from '../config/database';
 import { AppError } from '../utils/AppError';
-import { VaccineType, VialType, VaccineRouteType } from '@prisma/client';
+import { VaccineType, VialType, VaccineRouteType, Prisma } from '@prisma/client';
 
 export interface CreateVaccineInput {
   name: string;
@@ -451,7 +451,6 @@ export class VaccineService {
 
       // Meta
       isActive: vaccine.isActive,
-      price: vaccine.price,
     };
   }
 
@@ -504,7 +503,7 @@ export class VaccineService {
     const query = {
       name: {
         equals: data.name,
-        mode: 'insensitive',
+        mode: 'insensitive' as Prisma.QueryMode, // or just 'insensitive'
       },
       // manufacturer: {
       //   equals: data.manufacturer,
@@ -581,7 +580,7 @@ export class VaccineService {
     const query = {
       name: {
         equals: data.name,
-        mode: 'insensitive',
+        mode: 'insensitive' as Prisma.QueryMode, // or just 'insensitive'
       },
       // manufacturer: {
       //   equals: data.manufacturer,

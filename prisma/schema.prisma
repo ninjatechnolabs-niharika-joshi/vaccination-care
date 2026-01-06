@@ -39,19 +39,21 @@ model Admin {
 }
 
 model User {
-  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullName     String     @db.VarChar(255)
-  email        String     @unique @db.VarChar(255)
-  password     String     @db.VarChar(255)
-  phone        String?    @db.VarChar(50)
-  profilePhoto String?
-  role         UserRole   @default(ADMIN)
-  status       UserStatus @default(ACTIVE)
-  isDeleted    Boolean    @default(false)
-  deletedAt    DateTime?  @db.Timestamp(6)
-  lastLoginAt  DateTime?  @db.Timestamp(6)
-  createdAt    DateTime   @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime   @default(now()) @updatedAt @db.Timestamp(6)
+  id                     String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName               String     @db.VarChar(255)
+  email                  String     @unique @db.VarChar(255)
+  password               String     @db.VarChar(255)
+  phone                  String?    @db.VarChar(50)
+  profilePhoto           String?
+  role                   UserRole   @default(ADMIN)
+  status                 UserStatus @default(ACTIVE)
+  isDeleted              Boolean    @default(false)
+  deletedAt              DateTime?  @db.Timestamp(6)
+  lastLoginAt            DateTime?  @db.Timestamp(6)
+  passwordResetToken     String?
+  passwordResetExpiresAt DateTime?
+  createdAt              DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt              DateTime   @default(now()) @updatedAt @db.Timestamp(6)
 
   @@index([email])
   @@index([role])

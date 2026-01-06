@@ -268,8 +268,9 @@ export class AppointmentService {
         vaccinationCenter: { connect: { id: data.clinicId } },
         vaccine: { connect: { id: data.vaccineId } },
         medicalStaff: data.medicalStaffId ? { connect: { id: data.medicalStaffId } } : undefined,
+        child: data?.childId ? { connect: { id: data.childId } } : null
       }
-      if (data?.childId) dataObject.child = { connect: { id: data.childId } }
+      // if (data?.childId) dataObject.child = { connect: { id: data.childId } }
       // 6. Create appointment
       const appointment = await prisma.appointment.create({
         data: { ...dataObject },
@@ -943,7 +944,7 @@ export class AppointmentService {
               id: true,
               name: true,
               address: true,
-              city: true,
+              // city: true,
             },
           },
           vaccinationRecord: {
